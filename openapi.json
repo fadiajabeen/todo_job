@@ -1,0 +1,422 @@
+{
+"openapi": "3.0.2",
+"info": {
+"title": "FastAPI",
+"version": "0.1.0"
+},
+"paths": {
+"/": {
+"get": {
+"summary": "Get All Jobs",
+"operationId": "get_all_jobs__get",
+"responses": {
+"200": {
+"description": "Successful Response",
+"content": {
+"application/json": {
+"schema": {
+"$ref": "#/components/schemas/ResponseList"
+}
+}
+}
+}
+},
+"security": [
+{
+"OAuth2PasswordBearer": []
+}
+]
+}
+},
+"/add_job/{job}": {
+"post": {
+"summary": "Add Job",
+"operationId": "add_job_add_job__job__post",
+"requestBody": {
+"content": {
+"application/json": {
+"schema": {
+"$ref": "#/components/schemas/JobInsertModel"
+}
+}
+},
+"required": true
+},
+"responses": {
+"201": {
+"description": "Successful Response",
+"content": {
+"application/json": {
+"schema": {
+"$ref": "#/components/schemas/ResponseBase"
+}
+}
+}
+},
+"422": {
+"description": "Validation Error",
+"content": {
+"application/json": {
+"schema": {
+"$ref": "#/components/schemas/HTTPValidationError"
+}
+}
+}
+}
+},
+"security": [
+{
+"OAuth2PasswordBearer": []
+}
+]
+}
+},
+"/edit_job": {
+"put": {
+"summary": "Edit Job",
+"operationId": "edit_job_edit_job_put",
+"parameters": [
+{
+"required": true,
+"schema": {
+"title": "Id",
+"type": "integer"
+},
+"name": "id",
+"in": "query"
+},
+{
+"required": false,
+"schema": {
+"title": "Title",
+"maxLength": 64,
+"minLength": 3,
+"type": "string"
+},
+"name": "title",
+"in": "query"
+},
+{
+"required": false,
+"schema": {
+"title": "Description",
+"type": "string"
+},
+"name": "description",
+"in": "query"
+}
+],
+"responses": {
+"200": {
+"description": "Successful Response",
+"content": {
+"application/json": {
+"schema": {
+"$ref": "#/components/schemas/ResponseBase"
+}
+}
+}
+},
+"422": {
+"description": "Validation Error",
+"content": {
+"application/json": {
+"schema": {
+"$ref": "#/components/schemas/HTTPValidationError"
+}
+}
+}
+}
+},
+"security": [
+{
+"OAuth2PasswordBearer": []
+}
+]
+}
+},
+"/delete_job/{id}": {
+"delete": {
+"summary": "Delete Job",
+"operationId": "delete_job_delete_job__id__delete",
+"parameters": [
+{
+"required": true,
+"schema": {
+"title": "Id",
+"type": "integer"
+},
+"name": "id",
+"in": "path"
+}
+],
+"responses": {
+"200": {
+"description": "Successful Response",
+"content": {
+"application/json": {
+"schema": {
+"$ref": "#/components/schemas/ResponseBase"
+}
+}
+}
+},
+"422": {
+"description": "Validation Error",
+"content": {
+"application/json": {
+"schema": {
+"$ref": "#/components/schemas/HTTPValidationError"
+}
+}
+}
+}
+},
+"security": [
+{
+"OAuth2PasswordBearer": []
+}
+]
+}
+},
+"/token": {
+"post": {
+"summary": "Login",
+"operationId": "login_token_post",
+"requestBody": {
+"content": {
+"application/x-www-form-urlencoded": {
+"schema": {
+"$ref": "#/components/schemas/Body_login_token_post"
+}
+}
+},
+"required": true
+},
+"responses": {
+"200": {
+"description": "Successful Response",
+"content": {
+"application/json": {
+"schema": {}
+}
+}
+},
+"422": {
+"description": "Validation Error",
+"content": {
+"application/json": {
+"schema": {
+"$ref": "#/components/schemas/HTTPValidationError"
+}
+}
+}
+}
+}
+}
+}
+},
+"components": {
+"schemas": {
+"Body_login_token_post": {
+"title": "Body_login_token_post",
+"required": [
+"username",
+"password"
+],
+"type": "object",
+"properties": {
+"grant_type": {
+"title": "Grant Type",
+"pattern": "password",
+"type": "string"
+},
+"username": {
+"title": "Username",
+"type": "string"
+},
+"password": {
+"title": "Password",
+"type": "string"
+},
+"scope": {
+"title": "Scope",
+"type": "string",
+"default": ""
+},
+"client_id": {
+"title": "Client Id",
+"type": "string"
+},
+"client_secret": {
+"title": "Client Secret",
+"type": "string"
+}
+}
+},
+"HTTPValidationError": {
+"title": "HTTPValidationError",
+"type": "object",
+"properties": {
+"detail": {
+"title": "Detail",
+"type": "array",
+"items": {
+"$ref": "#/components/schemas/ValidationError"
+}
+}
+}
+},
+"JobInsertModel": {
+"title": "JobInsertModel",
+"required": [
+"title"
+],
+"type": "object",
+"properties": {
+"title": {
+"title": "Title of Job",
+"maxLength": 64,
+"minLength": 3,
+"type": "string"
+},
+"description": {
+"title": "Description",
+"type": "string",
+"Description": "Description of the Job post."
+}
+},
+"example": {
+"title": "Technical Team Lead",
+"description": "A Lead with an experience of at least 2 years with diverse software development background."
+}
+},
+"JobListModel": {
+"title": "JobListModel",
+"required": [
+"id",
+"title",
+"description",
+"created_by",
+"updated_by",
+"created_date",
+"updated_date"
+],
+"type": "object",
+"properties": {
+"id": {
+"title": "Id",
+"type": "integer"
+},
+"title": {
+"title": "Title",
+"type": "string"
+},
+"description": {
+"title": "Description",
+"type": "string"
+},
+"created_by": {
+"title": "Created By",
+"type": "string"
+},
+"updated_by": {
+"title": "Updated By",
+"type": "string"
+},
+"created_date": {
+"title": "Created Date",
+"type": "string",
+"format": "date-time"
+},
+"updated_date": {
+"title": "Updated Date",
+"type": "string",
+"format": "date-time"
+}
+}
+},
+"ResponseBase": {
+"title": "ResponseBase",
+"required": [
+"code",
+"message"
+],
+"type": "object",
+"properties": {
+"code": {
+"title": "Code",
+"type": "integer"
+},
+"message": {
+"title": "Message",
+"type": "string"
+}
+}
+},
+"ResponseList": {
+"title": "ResponseList",
+"required": [
+"code",
+"message",
+"jobs"
+],
+"type": "object",
+"properties": {
+"code": {
+"title": "Code",
+"type": "integer"
+},
+"message": {
+"title": "Message",
+"type": "string"
+},
+"jobs": {
+"title": "Jobs",
+"type": "array",
+"items": {
+"$ref": "#/components/schemas/JobListModel"
+}
+}
+}
+},
+"ValidationError": {
+"title": "ValidationError",
+"required": [
+"loc",
+"msg",
+"type"
+],
+"type": "object",
+"properties": {
+"loc": {
+"title": "Location",
+"type": "array",
+"items": {
+"type": "string"
+}
+},
+"msg": {
+"title": "Message",
+"type": "string"
+},
+"type": {
+"title": "Error Type",
+"type": "string"
+}
+}
+}
+},
+"securitySchemes": {
+"OAuth2PasswordBearer": {
+"type": "oauth2",
+"flows": {
+"password": {
+"scopes": {},
+"tokenUrl": "token"
+}
+}
+}
+}
+}
+}
