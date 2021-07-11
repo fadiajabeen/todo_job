@@ -5,7 +5,7 @@ class Database:
 
     def __connect__(self):
         try:
-            self.con = psycopg2.connect(host='localhost', user='postgres', password='p0$TGr3QL123', database='post_jobs')
+            self.con = psycopg2.connect(host='localhost', user='postgres', password='', database='post_jobs')
             self.cursor = self.con.cursor()
             self.cursor.execute("SELECT version();")
             # Fetch result

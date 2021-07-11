@@ -5,6 +5,20 @@
 -- Dumped from database version 13.3
 -- Dumped by pg_dump version 13.3
 
+-- Database: post_jobs
+
+-- DROP DATABASE post_jobs;
+
+CREATE DATABASE post_jobs
+    WITH 
+    OWNER = postgres
+    ENCODING = 'UTF8'
+    LC_COLLATE = 'English_American Samoa.1252'
+    LC_CTYPE = 'English_American Samoa.1252'
+    TABLESPACE = pg_default
+    CONNECTION LIMIT = -1;
+
+
 SET statement_timeout = 0;
 SET lock_timeout = 0;
 SET idle_in_transaction_session_timeout = 0;
@@ -58,7 +72,8 @@ ALTER TABLE public.job ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
 CREATE TABLE public."user" (
     id integer NOT NULL,
     username character varying(64),
-    password character varying(120)
+    password character varying(350),
+    fullname character varying(64)
 );
 
 
@@ -83,12 +98,10 @@ ALTER TABLE public."user" ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
 --
 
 COPY public.job (id, title, description, created_date, updated_date, created_by, updated_by) FROM stdin;
-2	Software Dev	None for now	2021-07-11 00:00:00+05	2021-07-11 00:00:00+05	\N	\N
-3	Software Dev	None for now	2021-07-11 00:00:00+05	2021-07-11 00:00:00+05	\N	\N
-4	Software Dev	None for now	2021-07-11 00:00:00+05	2021-07-11 00:00:00+05	\N	\N
-5	Software Dev	None for now	2021-07-11 00:00:00+05	2021-07-11 00:00:00+05	\N	\N
-6	Software Dev	None for now	2021-07-11 00:00:00+05	2021-07-11 00:00:00+05	\N	\N
-1	Software Developer	None for now	2021-07-10 00:00:00+05	2021-07-11 00:00:00+05	1	3
+3	Technical Recruiter	Highly qualified	2021-07-11 00:00:00+05	2021-07-11 00:00:00+05	5	5
+4	Software Developer	ASP.NET, Unity, Game Development	2021-07-11 00:00:00+05	2021-07-11 00:00:00+05	5	5
+5	Team Lead	Experience of 10+ years	2021-07-11 00:00:00+05	2021-07-11 00:00:00+05	5	5
+6	Intern	BSSE Fresh graduate	2021-07-11 00:00:00+05	2021-07-11 00:00:00+05	5	5
 \.
 
 
@@ -96,9 +109,8 @@ COPY public.job (id, title, description, created_date, updated_date, created_by,
 -- Data for Name: user; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public."user" (id, username, password) FROM stdin;
-1	fadia.jabeen	something
-3	keven john	\\x636a4e6c61324e6d636a5a6c5a6e5a6c
+COPY public."user" (id, username, password, fullname) FROM stdin;
+5	keven.john	sha256$GrVW0zS4kg6EZPJK$41078149673360af730bc41b261f2f31e4cff6c5b56bae1820910e91d09ddc47	Keven John
 \.
 
 
@@ -106,14 +118,14 @@ COPY public."user" (id, username, password) FROM stdin;
 -- Name: job_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.job_id_seq', 6, true);
+SELECT pg_catalog.setval('public.job_id_seq', 9, true);
 
 
 --
 -- Name: user_Id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."user_Id_seq"', 3, true);
+SELECT pg_catalog.setval('public."user_Id_seq"', 5, true);
 
 
 --
