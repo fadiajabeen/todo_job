@@ -48,17 +48,16 @@ class job:
         return db_obj.insert(query, val)
 
     @staticmethod
-    def insert_(title: str, description: str, created_by: Optional[int]=None):
+    def insert_(title: str, description: Optional[str]= None, created_by: Optional[int]=None):
         try:
             query = "INSERT INTO public.job (title, description, created_by, updated_by, created_date, updated_date) Values(%s,%s,%s,%s,%s,%s)"
             val = (title, description, created_by, created_by, datetime.today(), datetime.today())
             return db_obj.insert(query, val)
         except Exception as ex:
-            print(str(ex))
-            return None
+           raise Exception(str(ex))
 
     @staticmethod
-    def update_(id: int, title: str, description: str, updated_by: Optional[int]=None):
+    def update_(id: int, title: Optional[str]=None, description: Optional[str]=None, updated_by: Optional[int]=None):
         try:
             query = None
             if id and title and description:
@@ -72,29 +71,35 @@ class job:
                         % (description, updated_by, datetime.today(), id)
             if query:
                 return db_obj.update(query, None)
-            return None
+            else:
+                raise Exception("Please enter atleast one value to be updated Title/description.")
         except Exception as ex:
-            print(str(ex))
-            return None
+             #print(str(ex))   return None
+             raise Exception(ex)
+
 
     @staticmethod
     def delete_(id:int):
-        if id:
-            query = "DELETE FROM public.job WHERE id=%s" % id
-            return db_obj.delete(query, None)
-        return 0
+        try:
+            if id:
+                query = "DELETE FROM public.job WHERE id=%s" % id
+                return db_obj.delete(query, None)
+            return 0
+        except Exception as ex:
+            #print('delete', str(ex))
+            raise Exception(str(ex))
+
 
     @staticmethod
     def all_():
         query = "SELECT j.id AS \"Id\", title AS \"Title\", description AS \"Description\", cuser.fullname AS \"Created By\", uuser.fullname AS \"Modified By\", TO_CHAR(created_date, 'dd/mm/yyyy hh:mm:ss') AS \"Created Date\", TO_CHAR(updated_date, 'dd/mm/yyyy hh:mm:ss') AS \"Updated Date\" FROM public.job AS j LEFT JOIN public.user AS cuser ON " \
                 "j.created_by=cuser.id LEFT JOIN public.user AS uuser ON j.updated_by=uuser.id ORDER BY j.id"
-        return  db_obj.select_all(query)
+        return db_obj.select_all(query)
 
 
 if __name__ == "__main__":
     try:
-        #job.update_(1, "Software Developer", None, 3)
-        result = job.all_()
+        result = job.update_(200, None, None, 3)
         print(result)
     except Exception as ex:
         print(str(ex))
