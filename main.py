@@ -50,7 +50,7 @@ def edit_job(id: int, title: Optional[str] = Query(None, min_length=3, max_lengt
         else:
             raise HTTPException(status_code=500, detail='Unable to update the job right now. Job may not exist.')
     except Exception as error:
-        if str(error) or len(str(error)) == 0:
+        if not str(error) or len(str(error)) == 0:
             error = "Job doesn't exist. Please enter valid job id."
         #return JSONResponse(status_code=400, content={"code": 400, "message": str(error)})
         raise HTTPException(status_code=400, detail=str(error))
@@ -65,7 +65,7 @@ def delete_job(id: int, user_id: int = Depends(user.get_current_user_id)):
         else:
             return JSONResponse(status_code=200, content={"code": 200, "message": "Either job doesn't exist or it is already deleted."})
     except Exception as error:
-        if str(error) or len(str(error))==0:
+        if not str(error) or len(str(error))==0:
             error = "Job doesn't exist. Please enter valid job id."
         raise HTTPException(status_code=400, detail=str(error))
 
